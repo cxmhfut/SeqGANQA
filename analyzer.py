@@ -26,11 +26,11 @@ total = sum([x[1] for x in symbol.items()])
 num = 0
 word_num = 0
 
-file_result.write('<go>\n<eos>\n<unk>\n<pad>\n')
+file_result.write(b'<go>\n<eos>\n<unk>\n<pad>\n')
 
 for item in sorted(symbol.items(), key=lambda x: x[1], reverse=True):
     print(str([item[0].encode('utf-8')]))
-    file_result.write(item[0].encode('utf-8') + '\n')
+    file_result.write(item[0].encode('utf-8') + b'\n')
     num+=item[1]
     word_num+=1
     if num>=total*0.99:
