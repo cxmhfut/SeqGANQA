@@ -1,6 +1,5 @@
-
-class generation_config(object):
-    """Wrapper class for generator hyperparameter"""
+class generator_config(object):
+    """Wrapper class for generator hyper parameter"""
 
     def __init__(self):
         self.vocab_size = None
@@ -14,3 +13,10 @@ class generation_config(object):
         self.learning_rate = None
         self.beam_width = None
         self.embed = None
+
+
+class discriminator_config(object):
+    """Wrapper class for discriminator hyper parameter"""
+
+    def __init__(self):
+        self.vocab_size = None
