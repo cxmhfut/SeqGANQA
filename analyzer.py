@@ -1,7 +1,7 @@
 import re
 
-file_post = open('data/train_Q.post', 'r')
-file_resp = open('data/train_Q.response', 'r')
+file_post = open('data/train_Q.post', 'r', encoding='utf-8')
+file_resp = open('data/train_Q.response', 'r', encoding='utf-8')
 
 symbol = {}
 for line in file_post.readlines():
@@ -20,16 +20,16 @@ for line in file_resp.readlines():
         else:
             symbol[word] = 1
 
-file_result = open('result.txt', 'w')
+file_result = open('data/result.txt', 'w', encoding='utf-8')
 
 total = sum([x[1] for x in symbol.items()])
 num = 0
 word_num = 0
 
-file_result.write('<go>\n<eos>\n<unk>\n<pad>\n')
+file_result.write('<pad>\n<go>\n<eos>\n<unk>\n')
 
 for item in sorted(symbol.items(), key=lambda x: x[1], reverse=True):
-    print(str([item[0].encode('utf-8')]))
+    print(item[0])
     file_result.write(item[0] + '\n')
     num += item[1]
     word_num += 1

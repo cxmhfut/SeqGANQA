@@ -8,14 +8,15 @@ gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=gpu_rate)
 import os
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "3"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 from tensorflow.python.client import device_lib
 
 print(device_lib.list_local_devices())
 
-reader = Reader('data/small/weibo_pair_train_Q.post',
-                'data/small/weibo_pair_train_Q.response', 'data/words_99%.txt')
+reader = Reader('data/small/train_Q.post',
+                'data/small/train_Q.response',
+                'data/result.txt')
 
 print(len(reader.d))
 

@@ -1,12 +1,14 @@
 import re
 
-EOS_ID = 1
-UNK_ID = 2
+PAD_ID = 0
+GO_ID = 1
+EOS_ID = 2
+UNK_ID = 3
 
 
 class Reader:
     def __init__(self, file_name_post, file_name_resp, file_name_word):
-        with open(file_name_word, 'rb') as file_word:
+        with open(file_name_word, 'r', encoding='utf-8') as file_word:
             self.d = {}
             self.symbol = []
             num = 0
@@ -18,8 +20,8 @@ class Reader:
 
         self.file_name_post = file_name_post
         self.file_name_resp = file_name_resp
-        self.post = open(self.file_name_post, 'rb')
-        self.resp = open(self.file_name_resp, 'rb')
+        self.post = open(self.file_name_post, 'r', encoding='utf-8')
+        self.resp = open(self.file_name_resp, 'r', encoding='utf-8')
         self.epoch = 0
         self.k = 0
 
@@ -45,5 +47,14 @@ class Reader:
     def restore(self):
         self.post.close()
         self.resp.close()
-        self.post = open(self.file_name_post, 'rb')
-        self.resp = open(self.file_name_resp, 'rb')
+        self.post = open(self.file_name_post, 'r', encoding='utf-8')
+        self.resp = open(self.file_name_resp, 'r', encoding='utf-8')
+
+if __name__ == '__main__':
+    reader = Reader('data/train_Q.post',
+                    'data/train_Q.response',
+                    'data/result.txt')
+
+    result = reader.get_batch(10)
+    for item in result:
+        print(item)
