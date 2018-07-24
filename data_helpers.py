@@ -62,7 +62,7 @@ def build_dataset():
     file_post = open('data/train_Q.post', 'w', encoding='utf-8')
     file_resp = open('data/train_Q.response', 'w', encoding='utf-8')
 
-    for sample in tqdm(trainingSamples,desc='Building Dataset:'):
+    for sample in tqdm(trainingSamples,desc='Building Dataset'):
         post = sequence2Str(sample[0], id2word, clean=True) + '\n'
         response = sequence2Str(sample[1], id2word, clean=True) + '\n'
         file_post.write(post)
