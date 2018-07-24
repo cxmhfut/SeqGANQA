@@ -14,8 +14,8 @@ from tensorflow.python.client import device_lib
 
 print(device_lib.list_local_devices())
 
-reader = Reader('data/small/train_Q.post',
-                'data/small/train_Q.response',
+reader = Reader('data/train_Q.post',
+                'data/train_Q.response',
                 'data/result.txt')
 
 print(len(reader.d))

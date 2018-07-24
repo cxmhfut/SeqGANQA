@@ -3,10 +3,10 @@ from tensorflow.contrib import seq2seq
 import numpy as np
 from tensorflow.python.layers import core as layers_core
 
-GO_ID = 0
-EOS_ID = 1
-UNK_ID = 2
-PAD_ID = 3
+PAD_ID = 0
+GO_ID = 1
+EOS_ID = 2
+UNK_ID = 3
 
 sample_times = 5
 
@@ -76,13 +76,10 @@ class generator_model(object):
             def build_attention_state():
                 cell_state = tuple([tf.contrib.rnn.LSTMStateTuple(self.cell_state[i], self.cell_state[i + 1])
                                     for i in range(0, 2 * num_layer, 2)])
-                print(cell_state)
                 return tf.contrib.seq2seq.AttentionWrapperState(cell_state,
                                                                 self.attention, self.time, self.alignments, tuple([]))
 
             partial_decoder_state = build_attention_state()
-
-            print('shape:', decoder_output.get_shape())
 
             def single_cell():
                 return tf.contrib.rnn.BasicLSTMCell(lstm_size)
@@ -98,7 +95,6 @@ class generator_model(object):
 
             with tf.variable_scope('decoder') as decoder_scope:
                 attention_state = tf.transpose(encoder_output, [1, 0, 2])
-                print(attention_state, lstm_size, self.encoder_length)
                 attention_mechanism = seq2seq.LuongAttention(lstm_size, attention_state,
                                                              memory_sequence_length=self.encoder_length)
                 # train or evaluate
@@ -167,7 +163,6 @@ class generator_model(object):
                                                                    attention_layer_size=lstm_size)
                 beam_search_init_state = decoder_cell.zero_state(batch_size * beam_width, tf.float32).clone(
                     cell_state=encoder_state)
-                print('bs_init_state:', beam_search_init_state)
                 decoder_beam_search = tf.contrib.seq2seq.BeamSearchDecoder(
                     cell=decoder_cell,
                     embedding=embedding,
@@ -187,7 +182,6 @@ class generator_model(object):
             reward = tf.split(self.reward, [dim, max_length_decoder - dim])[0]
 
             params = scope.trainable_variables()
-            print('shape:', logits.get_shape())
             # update for pretraining
             cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=decoder_output,
                                                                            logits=logits)  # max_len * batch
@@ -481,7 +475,6 @@ class discriminator_model(object):
             """
             state_final_concat = tf.concat([post_state_concat, resp_state_concat], axis=1)
             logits = tf.layers.dense(state_final_concat, 2)
-            print(logits, self.labels)
             self.loss = tf.reduce_mean(
                 tf.nn.sparse_softmax_cross_entropy_with_logits(labels=self.labels, logits=logits))
             self.poss = tf.nn.softmax(logits)[:, 1]
