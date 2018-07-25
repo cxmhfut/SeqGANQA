@@ -2,7 +2,7 @@ class generator_config(object):
     """Wrapper class for generator hyper parameter"""
 
     def __init__(self):
-        self.vocab_size = None
+        self.vocab_size = 1000
         self.embedding_size = None
         self.lstm_size = None
         self.num_layer = None
