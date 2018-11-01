@@ -235,7 +235,7 @@ class generator_model(object):
                 else:
                     feed_weight[time].append(0)
 
-        feed_dict = {}
+        feed_dict = dict()
         feed_dict[self.encoder_input] = feed_post
         feed_dict[self.decoder_output] = feed_resp
         feed_dict[self.target_weight] = feed_weight
@@ -282,7 +282,7 @@ class generator_model(object):
                 feed_resp_length.append(len(resp))
                 for time in range(self.max_length_decoder):
                     feed_resp[time].append(resp[time] if time < len(resp) else PAD_ID)
-            feed_dict = {}
+            feed_dict = dict()
             feed_dict[self.encoder_input] = feed_post
             feed_dict[self.encoder_length] = feed_post_length
             feed_dict[self.decoder_output] = feed_resp
@@ -297,7 +297,7 @@ class generator_model(object):
                 cell_state = []
                 for lstm_tuple in state.cell_state:
                     cell_state = cell_state + [lstm_tuple.c, lstm_tuple.h]
-                feed_dict = {}
+                feed_dict = dict()
                 feed_dict[self.encoder_input] = feed_post
                 feed_dict[self.encoder_length] = feed_post_length
                 feed_dict[self.start_tokens] = start_tokens
@@ -354,7 +354,7 @@ class generator_model(object):
                 else:
                     feed_weight[time].append(0)
         print(feed_reward)
-        feed_dict = {}
+        feed_dict = dict()
         feed_dict[self.encoder_input] = feed_post
         feed_dict[self.encoder_length] = feed_post_length
         feed_dict[self.decoder_output] = feed_resp
@@ -368,7 +368,7 @@ class generator_model(object):
         # teacher forcing
         evaluate_result = discriminator.evaluate(sess, batch, reader)
 
-        feed_dict = {}
+        feed_dict = dict()
         feed_dict[self.encoder_input] = feed_post
         feed_dict[self.encoder_length] = feed_post_length
         feed_resp = [[] for _ in range(self.max_length_decoder)]
@@ -402,7 +402,7 @@ class generator_model(object):
             feed_post_length.append(len(post))
             for time in range(self.max_length_encoder):
                 feed_post[time].append(post[time] if time < len(post) else PAD_ID)
-        feed_dict = {}
+        feed_dict = dict()
         feed_dict[self.encoder_input] = feed_post
         feed_dict[self.encoder_length] = feed_post_length
         feed_dict[self.max_inference_length] = self.max_length_decoder - 1
@@ -510,8 +510,8 @@ class discriminator_model(object):
         feed_post_length = []
         feed_resp_length = []
         feed_labels = []
-        print('positive:', out(batch, reader))
-        print('negative:', out([(batch[index][0], resp_generator[index]) for index in range(self.batch_size)], reader))
+        # print('positive:', out(batch, reader))
+        # print('negative:', out([(batch[index][0], resp_generator[index]) for index in range(self.batch_size)], reader))
         for post, resp in batch:
             feed_post_length.append(len(post))
             feed_resp_length.append(len(resp))
